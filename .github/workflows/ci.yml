@@ -19,9 +19,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up JDK 11
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         java-version: '11'
         distribution: 'temurin'
@@ -36,14 +36,14 @@ jobs:
     - name: Build with Maven
       run: mvn -B clean test
       
-    - uses: actions/upload-artifact@master
+    - uses: actions/upload-artifact@v4
       with:
         name: allure-results
         path: allure-results
-        retention-days: 20
+        retention-days: 30
         
     - name: Get Allure history
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       if: always()
       continue-on-error: true
       with:
@@ -51,7 +51,7 @@ jobs:
         path: gh-pages
     
     - name: Test marketplace action
-      uses: simple-elf/allure-report-action@master
+      uses: simple-elf/allure-report-action@58e6590adf6d8f196a0d771bf8a00e6921086a62 #v1.9
       if: always()
       id: allure-report
       with:
@@ -63,7 +63,7 @@ jobs:
 
     - name: Deploy report to Github Pages
       if: always()
-      uses: peaceiris/actions-gh-pages@v2
+      uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e #v4
       env:
         PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         PUBLISH_BRANCH: gh-pages
